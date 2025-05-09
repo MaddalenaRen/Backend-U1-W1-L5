@@ -7,7 +7,7 @@ public class Player {
         System.out.println(messaggio);
         while (!scanner.hasNextInt()) {
             System.out.println("Errore: devi inserire un numero intero.");
-            scanner.next(); // consuma input sbagliato
+            scanner.next();
             System.out.println(messaggio);
         }
         return scanner.nextInt();
@@ -56,23 +56,36 @@ public class Player {
                     break;
             }
 
-            scanner.nextLine();
+            scanner.nextLine(); // consuma newline extra
         }
 
         int scelta;
 
         do {
-            System.out.println("Scegli un elemento della lista che hai creato, inserendo un numero da 1 a 5 per selezionare, 0 per terminare");
-            while (!scanner.hasNextInt()){
-                System.out.println("Errore: Inserisci un numero intero da 1 a 5 per selezionare, 0 per terminare");
+            System.out.println("Scegli un elemento della lista che hai creato, inserendo un numero da 1 a 5 per selezionare, 0 per terminare:");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Errore: Inserisci un numero intero da 1 a 5 per selezionare, 0 per terminare:");
                 scanner.next();
             }
+
             scelta = scanner.nextInt();
-            if (scelta >= 1 && scelta <= 5){
-                
+
+            if (scelta >= 1 && scelta <= 5) {
+                ElementoMultimediale elemento = elementi[scelta - 1];
+                if (elemento instanceof ElementoRiproducibile) {
+                    ((ElementoRiproducibile) elemento).play();
+                } else if (elemento instanceof Immagine) {
+                    ((Immagine) elemento).show();
+                } else {
+                    System.out.println("Tipo di elemento sconosciuto.");
+                }
+            } else if (scelta != 0) {
+                System.out.println("Scelta non valida. Inserisci un numero tra 1 e 5, oppure 0 per uscire.");
             }
-        }
 
+        } while (scelta != 0);
 
+        System.out.println("Lettore multimediale terminato.");
+        scanner.close();
     }
 }
